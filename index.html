@@ -130,6 +130,21 @@ html, body {
   font-size: 14px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.spinner-input {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  background: #fff;
+  border: 2px solid #007aff;
+  border-radius: 4px;
+  width: 100%;
+  height: 28px;
+  -webkit-user-select: text;
+  user-select: text;
+  padding: 0;
 }
 .menu-card.disabled .input-row { display: none; }
 .menu-card.disabled .menu-name { color: #c7c7cc; }
@@ -285,6 +300,9 @@ textarea:focus { outline: 2px solid #007aff; }
 
   <div class="section" id="menuSection">
     <div class="section-label">メニュー（行ったものをタップして記録）</div>
+    <div id="lastRecord" style="background:#f5f5f7;border-radius:10px;padding:10px 12px;margin-bottom:10px;min-height:36px;font-size:13px;">
+      <span style="color:#c7c7cc">名前と種目を選択すると前回記録が表示されます</span>
+    </div>
     <div id="menuList"></div>
   </div>
 
@@ -309,7 +327,7 @@ textarea:focus { outline: 2px solid #007aff; }
 //============================================
 // 設定エリア（あとでGAS URLに書き換える）
 //============================================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbya7dG4XHW8__iM5LB-5zjvQO6qmK1umTWVFl9kqLt1aN_3IRunnKdUyM1ZXUNdeb7Y/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzDQLtAHgaKuX1fjxA9ui3U9Fs2OXHDltzFW_OXHmj_MBAw6jhc9Yau4yPHdaIMnME/exec";
 
 // 投手リスト（中京大学硬式野球部）
 const PITCHERS = [
@@ -379,9 +397,11 @@ const state = {
   category: null,
   otherCategory: "",
   menus: {},
-  customMenus: [],   // その他カテゴリ用カスタムメニュー
+  customMenus: [],
+  extraMenus: {},  // ①SQ/DL/CL/Heavy用追加カスタムメニュー { cat: [{name,weight,reps,sets,notDone}] }
   rpe: null,
-  memo: ""
+  memo: "",
+  lastRecord: null  // ②前回記録
 };
 
 //============================================
@@ -444,6 +464,7 @@ function selectName(name, btn) {
   state.name = name;
   document.querySelectorAll("#nameGrid .btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
+  fetchLastRecord();
 }
 
 function selectCategory(cat, btn) {
@@ -451,6 +472,7 @@ function selectCategory(cat, btn) {
   state.menus = {};
   state.customMenus = [];
   state.otherCategory = "";
+  if (!state.extraMenus[cat]) state.extraMenus[cat] = [];
   document.querySelectorAll("#categoryGrid .btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
   const otherWrap = document.getElementById("otherCategoryWrap");
@@ -462,7 +484,40 @@ function selectCategory(cat, btn) {
   } else {
     otherWrap.style.display = "none";
   }
+  fetchLastRecord();
   renderMenus();
+}
+
+async function fetchLastRecord() {
+  if (!state.name || !state.category) return;
+  const lastDiv = document.getElementById("lastRecord");
+  if (lastDiv) lastDiv.textContent = "前回記録を取得中...";
+  try {
+    const url = GAS_URL + "?action=getLast&name=" + encodeURIComponent(state.name) + "&category=" + encodeURIComponent(state.category);
+    const res = await fetch(url, { mode: "cors" });
+    const data = await res.json();
+    state.lastRecord = data.record || null;
+    renderLastRecord();
+  } catch (e) {
+    state.lastRecord = null;
+    renderLastRecord();
+  }
+}
+
+function renderLastRecord() {
+  const lastDiv = document.getElementById("lastRecord");
+  if (!lastDiv) return;
+  if (!state.lastRecord) {
+    lastDiv.innerHTML = '<span style="color:#c7c7cc">前回記録なし</span>';
+    return;
+  }
+  const r = state.lastRecord;
+  const date = r.timestamp ? new Date(r.timestamp).toLocaleDateString("ja-JP", { month: "numeric", day: "numeric" }) : "";
+  lastDiv.innerHTML = `
+    <div style="font-size:12px;color:#86868b;margin-bottom:4px">📋 前回（${date}）</div>
+    <div style="font-size:13px;white-space:pre-wrap;color:#1c1c1e">${r.menuText || "記録なし"}</div>
+    ${r.rpe ? `<div style="font-size:12px;color:#86868b;margin-top:4px">RPE: ${r.rpe}　備考: ${r.memo || "なし"}</div>` : ""}
+  `;
 }
 
 function selectRpe(value, btn) {
@@ -522,7 +577,7 @@ function renderMenus() {
           <span class="input-cell-label">重量(kg)</span>
           <div class="spinner">
             <button class="spinner-btn" data-act="w-" data-name="${menu.name}">−</button>
-            <span class="spinner-value">${m.weight}</span>
+            <span class="spinner-value" data-type="w" data-name="${menu.name}">${m.weight}</span>
             <button class="spinner-btn" data-act="w+" data-name="${menu.name}">+</button>
           </div>
         </div>
@@ -530,7 +585,7 @@ function renderMenus() {
           <span class="input-cell-label">${unit}数</span>
           <div class="spinner">
             <button class="spinner-btn" data-act="r-" data-name="${menu.name}">−</button>
-            <span class="spinner-value">${m.reps}</span>
+            <span class="spinner-value" data-type="r" data-name="${menu.name}">${m.reps}</span>
             <button class="spinner-btn" data-act="r+" data-name="${menu.name}">+</button>
           </div>
         </div>
@@ -538,7 +593,7 @@ function renderMenus() {
           <span class="input-cell-label">セット</span>
           <div class="spinner">
             <button class="spinner-btn" data-act="s-" data-name="${menu.name}">−</button>
-            <span class="spinner-value">${m.sets}</span>
+            <span class="spinner-value" data-type="s" data-name="${menu.name}">${m.sets}</span>
             <button class="spinner-btn" data-act="s+" data-name="${menu.name}">+</button>
           </div>
         </div>
@@ -551,16 +606,100 @@ function renderMenus() {
     container.appendChild(card);
   });
 
+  // ① 通常カテゴリにもカスタム追加エリアを表示
+  if (!state.extraMenus[state.category]) state.extraMenus[state.category] = [];
+  const extraList = state.extraMenus[state.category];
+  extraList.forEach((em, idx) => {
+    const card = document.createElement("div");
+    let cardClass = "menu-card" + (em.notDone ? " not-done" : "");
+    card.className = cardClass;
+    card.innerHTML = `
+      <div class="menu-card-header">
+        <span class="menu-name">${em.name}</span>
+        <button class="extra-del-btn" data-idx="${idx}" style="font-size:12px;color:#ff3b30;background:none;border:none;cursor:pointer;padding:4px 8px;">削除</button>
+      </div>
+      <div class="input-row">
+        <div class="input-cell">
+          <span class="input-cell-label">重量(kg)</span>
+          <div class="spinner">
+            <button class="extra-spinner-btn" data-act="w-" data-idx="${idx}">−</button>
+            <span class="spinner-value extra-spinner-value" data-type="w" data-idx="${idx}">${em.weight}</span>
+            <button class="extra-spinner-btn" data-act="w+" data-idx="${idx}">+</button>
+          </div>
+        </div>
+        <div class="input-cell">
+          <span class="input-cell-label">回数</span>
+          <div class="spinner">
+            <button class="extra-spinner-btn" data-act="r-" data-idx="${idx}">−</button>
+            <span class="spinner-value extra-spinner-value" data-type="r" data-idx="${idx}">${em.reps}</span>
+            <button class="extra-spinner-btn" data-act="r+" data-idx="${idx}">+</button>
+          </div>
+        </div>
+        <div class="input-cell">
+          <span class="input-cell-label">セット</span>
+          <div class="spinner">
+            <button class="extra-spinner-btn" data-act="s-" data-idx="${idx}">−</button>
+            <span class="spinner-value extra-spinner-value" data-type="s" data-idx="${idx}">${em.sets}</span>
+            <button class="extra-spinner-btn" data-act="s+" data-idx="${idx}">+</button>
+          </div>
+        </div>
+      </div>
+      <label class="not-done-toggle" style="display:flex">
+        <input type="checkbox" class="extra-notdone" data-idx="${idx}" ${em.notDone ? "checked" : ""}>
+        <span>実施しなかった</span>
+      </label>
+    `;
+    container.appendChild(card);
+  });
+
+  // 追加ボタンエリア
+  const extraAddArea = document.createElement("div");
+  extraAddArea.style.cssText = "display:flex;gap:8px;margin-top:6px;";
+  extraAddArea.innerHTML = `
+    <input type="text" id="extraMenuInput" class="other-input" style="flex:1;margin-top:0"
+      placeholder="種目を追加（例：ダンベルカール）">
+    <button id="addExtraMenuBtn" style="background:#007aff;color:#fff;border:none;border-radius:10px;padding:0 14px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">追加</button>
+  `;
+  container.appendChild(extraAddArea);
+
   // イベント割当
   container.querySelectorAll(".menu-toggle").forEach(btn => {
     btn.onclick = () => toggleMenu(btn.dataset.name);
   });
-  container.querySelectorAll(".spinner-btn").forEach(btn => {
+  container.querySelectorAll(".spinner-btn:not(.extra-spinner-btn)").forEach(btn => {
     btn.onclick = () => adjustValue(btn.dataset.name, btn.dataset.act);
   });
-  container.querySelectorAll(".not-done-toggle input").forEach(cb => {
+  container.querySelectorAll(".spinner-value:not(.extra-spinner-value)").forEach(span => {
+    span.onclick = () => startDirectInput(span);
+  });
+  container.querySelectorAll(".not-done-toggle input[data-name]").forEach(cb => {
     cb.onchange = () => toggleNotDone(cb.dataset.name, cb.checked);
   });
+
+  // extraメニューイベント
+  container.querySelectorAll(".extra-del-btn").forEach(btn => {
+    btn.onclick = () => { extraList.splice(Number(btn.dataset.idx), 1); renderMenus(); };
+  });
+  container.querySelectorAll(".extra-spinner-btn").forEach(btn => {
+    btn.onclick = () => adjustExtraValue(state.category, Number(btn.dataset.idx), btn.dataset.act);
+  });
+  container.querySelectorAll(".extra-spinner-value").forEach(span => {
+    span.onclick = () => startDirectInputExtra(span);
+  });
+  container.querySelectorAll(".extra-notdone").forEach(cb => {
+    cb.onchange = () => { extraList[Number(cb.dataset.idx)].notDone = cb.checked; renderMenus(); };
+  });
+
+  const extraAddBtn = document.getElementById("addExtraMenuBtn");
+  const extraAddInput = document.getElementById("extraMenuInput");
+  const doExtraAdd = () => {
+    const name = extraAddInput.value.trim();
+    if (!name) return;
+    extraList.push({ name, weight: 0, reps: 10, sets: 3, notDone: false });
+    renderMenus();
+  };
+  extraAddBtn.onclick = doExtraAdd;
+  extraAddInput.addEventListener("keydown", e => { if (e.key === "Enter") doExtraAdd(); });
 }
 
 function toggleMenu(name) {
@@ -572,6 +711,39 @@ function toggleMenu(name) {
 function toggleNotDone(name, checked) {
   state.menus[name].notDone = checked;
   renderMenus();
+}
+
+function startDirectInput(span) {
+  const name = span.dataset.name;
+  const type = span.dataset.type;
+  const m = state.menus[name];
+  const currentVal = type === "w" ? m.weight : type === "r" ? m.reps : m.sets;
+
+  const input = document.createElement("input");
+  input.type = "number";
+  input.className = "spinner-input";
+  input.value = currentVal;
+  input.min = 0;
+  span.replaceWith(input);
+  input.focus();
+  input.select();
+
+  const commit = () => {
+    let val = parseFloat(input.value);
+    if (isNaN(val) || val < 0) val = 0;
+    if (type === "w") m.weight = Math.round(val * 10) / 10;
+    else if (type === "r") m.reps = Math.round(val);
+    else m.sets = Math.max(1, Math.round(val));
+    m.active = true;
+    m.notDone = false;
+    renderMenus();
+  };
+
+  input.addEventListener("blur", commit);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") { input.blur(); }
+    if (e.key === "Escape") { renderMenus(); }
+  });
 }
 
 function adjustValue(name, act) {
@@ -610,7 +782,7 @@ function renderOtherMenus(container) {
           <span class="input-cell-label">重量(kg)</span>
           <div class="spinner">
             <button class="spinner-btn" data-act="w-" data-idx="${idx}">−</button>
-            <span class="spinner-value">${m.weight}</span>
+            <span class="spinner-value" data-type="w" data-idx="${idx}">${m.weight}</span>
             <button class="spinner-btn" data-act="w+" data-idx="${idx}">+</button>
           </div>
         </div>
@@ -618,7 +790,7 @@ function renderOtherMenus(container) {
           <span class="input-cell-label">回数</span>
           <div class="spinner">
             <button class="spinner-btn" data-act="r-" data-idx="${idx}">−</button>
-            <span class="spinner-value">${m.reps}</span>
+            <span class="spinner-value" data-type="r" data-idx="${idx}">${m.reps}</span>
             <button class="spinner-btn" data-act="r+" data-idx="${idx}">+</button>
           </div>
         </div>
@@ -626,7 +798,7 @@ function renderOtherMenus(container) {
           <span class="input-cell-label">セット</span>
           <div class="spinner">
             <button class="spinner-btn" data-act="s-" data-idx="${idx}">−</button>
-            <span class="spinner-value">${m.sets}</span>
+            <span class="spinner-value" data-type="s" data-idx="${idx}">${m.sets}</span>
             <button class="spinner-btn" data-act="s+" data-idx="${idx}">+</button>
           </div>
         </div>
@@ -678,7 +850,44 @@ function renderOtherMenus(container) {
   addInput.addEventListener("keydown", e => { if (e.key === "Enter") doAdd(); });
 }
 
-function adjustCustomValue(idx, act) {
+function adjustExtraValue(cat, idx, act) {
+  const m = state.extraMenus[cat][idx];
+  if (act === "w+") m.weight = Math.round((m.weight + 2.5) * 10) / 10;
+  if (act === "w-") m.weight = Math.max(0, Math.round((m.weight - 2.5) * 10) / 10);
+  if (act === "r+") m.reps += 1;
+  if (act === "r-") m.reps = Math.max(0, m.reps - 1);
+  if (act === "s+") m.sets += 1;
+  if (act === "s-") m.sets = Math.max(1, m.sets - 1);
+  renderMenus();
+}
+
+function startDirectInputExtra(span) {
+  const idx = Number(span.dataset.idx);
+  const type = span.dataset.type;
+  const isCustom = span.classList.contains("custom-spinner-value");
+  const m = isCustom ? state.customMenus[idx] : state.extraMenus[state.category][idx];
+  const currentVal = type === "w" ? m.weight : type === "r" ? m.reps : m.sets;
+
+  const input = document.createElement("input");
+  input.type = "number";
+  input.className = "spinner-input";
+  input.value = currentVal;
+  input.min = 0;
+  span.replaceWith(input);
+  input.focus();
+  input.select();
+
+  const commit = () => {
+    let val = parseFloat(input.value);
+    if (isNaN(val) || val < 0) val = 0;
+    if (type === "w") m.weight = Math.round(val * 10) / 10;
+    else if (type === "r") m.reps = Math.round(val);
+    else m.sets = Math.max(1, Math.round(val));
+    renderMenus();
+  };
+  input.addEventListener("blur", commit);
+  input.addEventListener("keydown", e => { if (e.key === "Enter") input.blur(); if (e.key === "Escape") renderMenus(); });
+}
   const m = state.customMenus[idx];
   if (act === "w+") m.weight = Math.round((m.weight + 2.5) * 10) / 10;
   if (act === "w-") m.weight = Math.max(0, Math.round((m.weight - 2.5) * 10) / 10);
@@ -714,17 +923,17 @@ function buildMenuText() {
   Object.keys(state.menus).forEach(name => {
     const m = state.menus[name];
     if (!m.active) return;
-    if (m.notDone) {
-      lines.push(`${name}：実施しなかった`);
-      return;
-    }
+    if (m.notDone) { lines.push(`${name}：実施しなかった`); return; }
     const menuDef = CATEGORIES[state.category].find(x => x.name === name);
     const unit = menuDef && menuDef.unit ? menuDef.unit : "回";
-    if (m.weight > 0) {
-      lines.push(`${name} ${m.weight}kg × ${m.reps}${unit} × ${m.sets}セット`);
-    } else {
-      lines.push(`${name} ${m.reps}${unit} × ${m.sets}セット`);
-    }
+    if (m.weight > 0) lines.push(`${name} ${m.weight}kg × ${m.reps}${unit} × ${m.sets}セット`);
+    else lines.push(`${name} ${m.reps}${unit} × ${m.sets}セット`);
+  });
+  // extraMenus（追加種目）
+  (state.extraMenus[state.category] || []).forEach(em => {
+    if (em.notDone) { lines.push(`${em.name}：実施しなかった`); return; }
+    if (em.weight > 0) lines.push(`${em.name} ${em.weight}kg × ${em.reps}回 × ${em.sets}セット`);
+    else lines.push(`${em.name} ${em.reps}回 × ${em.sets}セット`);
   });
   return lines.join("\n");
 }
@@ -792,6 +1001,8 @@ function resetForm() {
   state.otherCategory = "";
   state.menus = {};
   state.customMenus = [];
+  state.extraMenus = {};
+  state.lastRecord = null;
   state.rpe = null;
   state.memo = "";
   document.getElementById("memo").value = "";
@@ -800,6 +1011,7 @@ function resetForm() {
   document.querySelectorAll(".btn.selected, .rpe-btn.selected").forEach(b =>
     b.classList.remove("selected")
   );
+  renderLastRecord();
   renderMenus();
   window.scrollTo(0, 0);
 }
