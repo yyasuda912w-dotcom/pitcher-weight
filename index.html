@@ -11,285 +11,68 @@
 html, body {
   margin: 0; padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-  background: #f5f5f7;
-  color: #1d1d1f;
-  font-size: 15px;
-  user-select: none;
-  -webkit-user-select: none;
+  background: #f5f5f7; color: #1d1d1f; font-size: 15px;
+  user-select: none; -webkit-user-select: none;
 }
-.container {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 16px 14px 100px;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e5e5ea;
-}
+.container { max-width: 480px; margin: 0 auto; padding: 16px 14px 100px; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #e5e5ea; }
 .header h1 { font-size: 17px; font-weight: 600; margin: 0; }
 .header .date { font-size: 13px; color: #86868b; }
 .section { margin-bottom: 18px; }
-.section-label {
-  font-size: 12px;
-  color: #86868b;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-.btn-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-.btn-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.section-label { font-size: 12px; color: #86868b; margin-bottom: 8px; font-weight: 500; }
+.btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .btn-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-.btn {
-  background: #fff;
-  border: 1px solid #e5e5ea;
-  border-radius: 10px;
-  padding: 14px 8px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.1s;
-  color: #1d1d1f;
-}
+.btn { background: #fff; border: 1px solid #e5e5ea; border-radius: 10px; padding: 14px 8px; text-align: center; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.1s; color: #1d1d1f; }
 .btn:active { transform: scale(0.96); }
-.btn.selected {
-  background: #007aff;
-  color: #fff;
-  border-color: #007aff;
-}
-.menu-card {
-  background: #fff;
-  border: 1px solid #e5e5ea;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 10px;
-}
-.menu-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
+.btn.selected { background: #007aff; color: #fff; border-color: #007aff; }
+.menu-card { background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+.menu-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .menu-name { font-size: 14px; font-weight: 600; }
-.menu-toggle {
-  font-size: 12px;
-  color: #007aff;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-}
+.menu-toggle { font-size: 12px; color: #007aff; background: none; border: none; cursor: pointer; padding: 4px 8px; }
 .menu-toggle.active { color: #34c759; font-weight: 600; }
-.input-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-  margin-top: 8px;
-}
-.input-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.input-cell-label {
-  font-size: 10px;
-  color: #86868b;
-  margin-bottom: 4px;
-}
-.spinner {
-  display: flex;
-  align-items: center;
-  background: #f5f5f7;
-  border-radius: 8px;
-  width: 100%;
-  height: 36px;
-  overflow: hidden;
-}
-.spinner-btn {
-  width: 28px;
-  height: 36px;
-  background: none;
-  border: none;
-  font-size: 18px;
-  font-weight: 600;
-  color: #007aff;
-  cursor: pointer;
-  flex-shrink: 0;
-}
+.input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+.input-cell { display: flex; flex-direction: column; align-items: center; }
+.input-cell-label { font-size: 10px; color: #86868b; margin-bottom: 4px; }
+.spinner { display: flex; align-items: center; background: #f5f5f7; border-radius: 8px; width: 100%; height: 36px; overflow: hidden; }
+.spinner-btn { width: 28px; height: 36px; background: none; border: none; font-size: 18px; font-weight: 600; color: #007aff; cursor: pointer; flex-shrink: 0; }
 .spinner-btn:active { background: #e5e5ea; }
-.spinner-value {
-  flex: 1;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-}
-.spinner-input {
-  flex: 1;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  background: #fff;
-  border: 2px solid #007aff;
-  border-radius: 4px;
-  width: 100%;
-  height: 28px;
-  -webkit-user-select: text;
-  user-select: text;
-  padding: 0;
-}
+.spinner-value { flex: 1; text-align: center; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; cursor: pointer; }
+.spinner-input { flex: 1; text-align: center; font-size: 14px; font-weight: 600; background: #fff; border: 2px solid #007aff; border-radius: 4px; width: 100%; height: 28px; -webkit-user-select: text; user-select: text; padding: 0; }
 .menu-card.disabled .input-row { display: none; }
 .menu-card.disabled .menu-name { color: #c7c7cc; }
-.other-input {
-  width: 100%;
-  border: 1px solid #e5e5ea;
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 14px;
-  font-family: inherit;
-  background: #fff;
-  -webkit-user-select: text;
-  user-select: text;
-  margin-top: 6px;
-}
+.other-input { width: 100%; border: 1px solid #e5e5ea; border-radius: 10px; padding: 10px; font-size: 14px; font-family: inherit; background: #fff; -webkit-user-select: text; user-select: text; margin-top: 6px; }
 .other-input:focus { outline: 2px solid #007aff; }
-.not-done-toggle {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  font-size: 13px;
-  color: #86868b;
-  cursor: pointer;
-}
-.not-done-toggle input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  accent-color: #ff3b30;
-}
+.not-done-toggle { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 13px; color: #86868b; cursor: pointer; }
+.not-done-toggle input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #ff3b30; }
 .menu-card.not-done .input-row { opacity: 0.35; pointer-events: none; }
-.menu-card.not-done .menu-name::after {
-  content: " (未実施)";
-  font-size: 11px;
-  color: #ff3b30;
-  font-weight: 400;
-}
-.rpe-grid {
-  display: grid;
-  grid-template-columns: repeat(11, 1fr);
-  gap: 3px;
-}
-.rpe-btn {
-  background: #fff;
-  border: 1px solid #e5e5ea;
-  border-radius: 6px;
-  padding: 10px 0;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
+.menu-card.not-done .menu-name::after { content: " (未実施)"; font-size: 11px; color: #ff3b30; font-weight: 400; }
+.rpe-grid { display: grid; grid-template-columns: repeat(11, 1fr); gap: 3px; }
+.rpe-btn { background: #fff; border: 1px solid #e5e5ea; border-radius: 6px; padding: 10px 0; text-align: center; font-size: 12px; font-weight: 600; cursor: pointer; }
 .rpe-btn:active { transform: scale(0.92); }
-.rpe-btn.selected {
-  background: #ff9500;
-  color: #fff;
-  border-color: #ff9500;
-}
-.rpe-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  color: #86868b;
-  margin-top: 4px;
-}
-textarea {
-  width: 100%;
-  min-height: 60px;
-  border: 1px solid #e5e5ea;
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 14px;
-  font-family: inherit;
-  background: #fff;
-  resize: none;
-  -webkit-user-select: text;
-  user-select: text;
-}
+.rpe-btn.selected { background: #ff9500; color: #fff; border-color: #ff9500; }
+.rpe-labels { display: flex; justify-content: space-between; font-size: 10px; color: #86868b; margin-top: 4px; }
+textarea { width: 100%; min-height: 60px; border: 1px solid #e5e5ea; border-radius: 10px; padding: 10px; font-size: 14px; font-family: inherit; background: #fff; resize: none; -webkit-user-select: text; user-select: text; }
 textarea:focus { outline: 2px solid #007aff; }
-.submit-btn {
-  position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 28px);
-  max-width: 452px;
-  background: #007aff;
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  padding: 16px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-}
+.submit-btn { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 28px); max-width: 452px; background: #007aff; color: #fff; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(0,122,255,0.3); }
 .submit-btn:active { transform: translateX(-50%) scale(0.98); }
-.submit-btn:disabled {
-  background: #c7c7cc;
-  box-shadow: none;
-}
-.toast {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  padding: 16px 24px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.2s;
-  pointer-events: none;
-  text-align: center;
-}
+.submit-btn:disabled { background: #c7c7cc; box-shadow: none; }
+.toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,0.85); color: #fff; padding: 16px 24px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 9999; opacity: 0; transition: opacity 0.2s; pointer-events: none; text-align: center; }
 .toast.show { opacity: 1; }
-.toast.success { background: rgba(52, 199, 89, 0.95); }
-.toast.error { background: rgba(255, 59, 48, 0.95); }
-.hidden { display: none !important; }
-.no-menu-msg {
-  text-align: center;
-  color: #86868b;
-  padding: 20px;
-  font-size: 13px;
-}
+.toast.success { background: rgba(52,199,89,0.95); }
+.toast.error { background: rgba(255,59,48,0.95); }
+.no-menu-msg { text-align: center; color: #86868b; padding: 20px; font-size: 13px; }
 </style>
 </head>
 <body>
-
 <div class="container">
-
   <div class="header">
     <h1>投手ウエイト管理</h1>
     <span class="date" id="today"></span>
   </div>
-
   <div class="section">
     <div class="section-label">名前</div>
     <div class="btn-grid" id="nameGrid"></div>
   </div>
-
   <div class="section">
     <div class="section-label">本日の種目</div>
     <div class="btn-grid cols-3" id="categoryGrid"></div>
@@ -297,55 +80,40 @@ textarea:focus { outline: 2px solid #007aff; }
       <input type="text" class="other-input" id="otherCategoryInput" placeholder="種目を自由に入力してください">
     </div>
   </div>
-
-  <div class="section" id="menuSection">
+  <div class="section">
     <div class="section-label">メニュー（行ったものをタップして記録）</div>
     <div id="lastRecord" style="background:#f5f5f7;border-radius:10px;padding:10px 12px;margin-bottom:10px;min-height:36px;font-size:13px;">
       <span style="color:#c7c7cc">名前と種目を選択すると前回記録が表示されます</span>
     </div>
     <div id="menuList"></div>
   </div>
-
   <div class="section">
     <div class="section-label">RPE（主観的運動強度）</div>
     <div class="rpe-grid" id="rpeGrid"></div>
     <div class="rpe-labels"><span>弱い</span><span>強い</span></div>
   </div>
-
   <div class="section">
     <div class="section-label">備考（任意）</div>
     <textarea id="memo" placeholder="例）明日登板、肘を伸ばした際に少し違和感あり"></textarea>
   </div>
-
   <button class="submit-btn" id="submitBtn">送信する</button>
-
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-//============================================
-// 設定エリア（あとでGAS URLに書き換える）
-//============================================
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxHu898lfrAW1SRffdTUEvm6U6_jybFGTShOK7AC_MWaiiBGcmgQcdrb80W1qPNBMcWSQ/exec";
 
-// 投手リスト（中京大学硬式野球部）
 const PITCHERS = [
-  // 4年
   "植松 麟之介", "藤本 逸希",
-  // 3年
   "磯部 祐吉", "伊藤 幹太", "加藤 達哉", "蟹江 哲舟",
   "佐竹 泰河", "寺下 颯真", "中井 創友", "中山 敦",
   "前田 龍太朗", "横丸 冬馬",
-  // 2年
   "沖 悠人", "近藤 秀太", "堺 千真", "長野 晴太", "三浦 大輝",
-  // 1年
   "秋山 創大", "織田 優太", "木村 颯汰", "小山 隼和",
   "佐藤 爽楽", "島田 大翔", "田川 竜之介", "坪 眞都",
   "中島 稜太", "服部 圭真", "松下 紘也"
 ];
 
-// 種目カテゴリと、それぞれに含まれるメニュー
 const CATEGORIES = {
   "SQ": [
     { name: "パーフェクトプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
@@ -389,74 +157,47 @@ const CATEGORIES = {
   "その他": []
 };
 
-//============================================
-// 状態管理
-//============================================
 const state = {
-  name: null,
-  category: null,
-  otherCategory: "",
-  menus: {},
-  customMenus: [],
-  extraMenus: {},  // ①SQ/DL/CL/Heavy用追加カスタムメニュー { cat: [{name,weight,reps,sets,notDone}] }
-  rpe: null,
-  memo: "",
-  lastRecord: null  // ②前回記録
+  name: null, category: null, otherCategory: "",
+  menus: {}, customMenus: [], extraMenus: {},
+  rpe: null, memo: "", lastRecord: null
 };
 
-//============================================
-// 初期化
-//============================================
 function init() {
-  // 日付表示
   const d = new Date();
   const days = ["日","月","火","水","木","金","土"];
-  document.getElementById("today").textContent =
-    `${d.getMonth()+1}/${d.getDate()} (${days[d.getDay()]})`;
+  document.getElementById("today").textContent = `${d.getMonth()+1}/${d.getDate()} (${days[d.getDay()]})`;
 
-  // 名前ボタン生成
   const nameGrid = document.getElementById("nameGrid");
   PITCHERS.forEach(name => {
     const btn = document.createElement("button");
-    btn.className = "btn";
-    btn.textContent = name;
+    btn.className = "btn"; btn.textContent = name;
     btn.onclick = () => selectName(name, btn);
     nameGrid.appendChild(btn);
   });
 
-  // 種目カテゴリボタン生成
   const catGrid = document.getElementById("categoryGrid");
   Object.keys(CATEGORIES).forEach(cat => {
     const btn = document.createElement("button");
-    btn.className = "btn";
-    btn.textContent = cat;
+    btn.className = "btn"; btn.textContent = cat;
     btn.onclick = () => selectCategory(cat, btn);
     catGrid.appendChild(btn);
   });
 
-  // 「その他」自由記述
   document.getElementById("otherCategoryInput").addEventListener("input", e => {
     state.otherCategory = e.target.value;
   });
 
-  // RPEボタン生成
   const rpeGrid = document.getElementById("rpeGrid");
   for (let i = 0; i <= 10; i++) {
     const btn = document.createElement("button");
-    btn.className = "rpe-btn";
-    btn.textContent = i;
+    btn.className = "rpe-btn"; btn.textContent = i;
     btn.onclick = () => selectRpe(i, btn);
     rpeGrid.appendChild(btn);
   }
 
-  // 備考の同期
-  document.getElementById("memo").addEventListener("input", e => {
-    state.memo = e.target.value;
-  });
-
-  // 送信ボタン
+  document.getElementById("memo").addEventListener("input", e => { state.memo = e.target.value; });
   document.getElementById("submitBtn").onclick = submit;
-
   renderMenus();
 }
 
@@ -469,23 +210,25 @@ function selectName(name, btn) {
 
 function selectCategory(cat, btn) {
   state.category = cat;
-  state.menus = {};
-  state.customMenus = [];
-  state.otherCategory = "";
+  state.menus = {}; state.customMenus = []; state.otherCategory = "";
   if (!state.extraMenus[cat]) state.extraMenus[cat] = [];
   document.querySelectorAll("#categoryGrid .btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
-  const otherWrap = document.getElementById("otherCategoryWrap");
-  const otherInput = document.getElementById("otherCategoryInput");
   if (cat === "その他") {
-    otherWrap.style.display = "block";
-    otherInput.value = "";
-    otherInput.focus();
+    document.getElementById("otherCategoryWrap").style.display = "block";
+    document.getElementById("otherCategoryInput").value = "";
+    document.getElementById("otherCategoryInput").focus();
   } else {
-    otherWrap.style.display = "none";
+    document.getElementById("otherCategoryWrap").style.display = "none";
   }
   fetchLastRecord();
   renderMenus();
+}
+
+function selectRpe(value, btn) {
+  state.rpe = value;
+  document.querySelectorAll("#rpeGrid .rpe-btn").forEach(b => b.classList.remove("selected"));
+  btn.classList.add("selected");
 }
 
 async function fetchLastRecord() {
@@ -497,11 +240,10 @@ async function fetchLastRecord() {
     const res = await fetch(url, { mode: "cors" });
     const data = await res.json();
     state.lastRecord = data.record || null;
-    renderLastRecord();
   } catch (e) {
     state.lastRecord = null;
-    renderLastRecord();
   }
+  renderLastRecord();
 }
 
 function renderLastRecord() {
@@ -516,19 +258,14 @@ function renderLastRecord() {
   lastDiv.innerHTML = `
     <div style="font-size:12px;color:#86868b;margin-bottom:4px">📋 前回（${date}）</div>
     <div style="font-size:13px;white-space:pre-wrap;color:#1c1c1e">${r.menuText || "記録なし"}</div>
-    ${r.rpe ? `<div style="font-size:12px;color:#86868b;margin-top:4px">RPE: ${r.rpe}　備考: ${r.memo || "なし"}</div>` : ""}
+    ${r.rpe != null ? `<div style="font-size:12px;color:#86868b;margin-top:4px">RPE: ${r.rpe}　備考: ${r.memo || "なし"}</div>` : ""}
   `;
 }
 
-function selectRpe(value, btn) {
-  state.rpe = value;
-  document.querySelectorAll("#rpeGrid .rpe-btn").forEach(b => b.classList.remove("selected"));
-  btn.classList.add("selected");
+function getList(mode) {
+  return mode === "custom" ? state.customMenus : state.extraMenus[state.category];
 }
 
-//============================================
-// メニュー描画
-//============================================
 function renderMenus() {
   const container = document.getElementById("menuList");
   container.innerHTML = "";
@@ -542,29 +279,18 @@ function renderMenus() {
     return;
   }
   if (state.category === "その他") {
-    renderOtherMenus(container);
+    renderCustomMenuSection(container, state.customMenus, "custom");
     return;
   }
 
-  const menus = CATEGORIES[state.category];
-  menus.forEach(menu => {
+  CATEGORIES[state.category].forEach(menu => {
     if (!state.menus[menu.name]) {
-      state.menus[menu.name] = {
-        active: false,
-        notDone: false,
-        weight: menu.default.weight,
-        reps: menu.default.reps,
-        sets: menu.default.sets
-      };
+      state.menus[menu.name] = { active: false, notDone: false, weight: menu.default.weight, reps: menu.default.reps, sets: menu.default.sets };
     }
     const m = state.menus[menu.name];
-    const card = document.createElement("div");
-    let cardClass = "menu-card";
-    if (!m.active) cardClass += " disabled";
-    if (m.active && m.notDone) cardClass += " not-done";
-    card.className = cardClass;
-
     const unit = menu.unit || "回";
+    const card = document.createElement("div");
+    card.className = "menu-card" + (!m.active ? " disabled" : "") + (m.active && m.notDone ? " not-done" : "");
     card.innerHTML = `
       <div class="menu-card-header">
         <span class="menu-name">${menu.name}</span>
@@ -606,100 +332,98 @@ function renderMenus() {
     container.appendChild(card);
   });
 
-  // ① 通常カテゴリにもカスタム追加エリアを表示
+  container.querySelectorAll(".menu-toggle").forEach(btn => {
+    btn.onclick = () => toggleMenu(btn.dataset.name);
+  });
+  container.querySelectorAll(".spinner-btn[data-name]").forEach(btn => {
+    btn.onclick = () => adjustValue(btn.dataset.name, btn.dataset.act);
+  });
+  container.querySelectorAll(".spinner-value[data-name]").forEach(span => {
+    span.onclick = () => startDirectInput(span, "normal");
+  });
+  container.querySelectorAll(".not-done-toggle input[data-name]").forEach(cb => {
+    cb.onchange = () => toggleNotDone(cb.dataset.name, cb.checked);
+  });
+
   if (!state.extraMenus[state.category]) state.extraMenus[state.category] = [];
-  const extraList = state.extraMenus[state.category];
-  extraList.forEach((em, idx) => {
+  renderCustomMenuSection(container, state.extraMenus[state.category], "extra");
+}
+
+function renderCustomMenuSection(container, list, mode) {
+  list.forEach((m, idx) => {
     const card = document.createElement("div");
-    let cardClass = "menu-card" + (em.notDone ? " not-done" : "");
-    card.className = cardClass;
+    card.className = "menu-card" + (m.notDone ? " not-done" : "");
     card.innerHTML = `
       <div class="menu-card-header">
-        <span class="menu-name">${em.name}</span>
-        <button class="extra-del-btn" data-idx="${idx}" style="font-size:12px;color:#ff3b30;background:none;border:none;cursor:pointer;padding:4px 8px;">削除</button>
+        <span class="menu-name">${m.name}</span>
+        <button class="del-btn" data-idx="${idx}" data-mode="${mode}" style="font-size:12px;color:#ff3b30;background:none;border:none;cursor:pointer;padding:4px 8px;">削除</button>
       </div>
       <div class="input-row">
         <div class="input-cell">
           <span class="input-cell-label">重量(kg)</span>
           <div class="spinner">
-            <button class="extra-spinner-btn" data-act="w-" data-idx="${idx}">−</button>
-            <span class="spinner-value extra-spinner-value" data-type="w" data-idx="${idx}">${em.weight}</span>
-            <button class="extra-spinner-btn" data-act="w+" data-idx="${idx}">+</button>
+            <button class="cspin-btn" data-act="w-" data-idx="${idx}" data-mode="${mode}">−</button>
+            <span class="spinner-value cspin-val" data-type="w" data-idx="${idx}" data-mode="${mode}">${m.weight}</span>
+            <button class="cspin-btn" data-act="w+" data-idx="${idx}" data-mode="${mode}">+</button>
           </div>
         </div>
         <div class="input-cell">
           <span class="input-cell-label">回数</span>
           <div class="spinner">
-            <button class="extra-spinner-btn" data-act="r-" data-idx="${idx}">−</button>
-            <span class="spinner-value extra-spinner-value" data-type="r" data-idx="${idx}">${em.reps}</span>
-            <button class="extra-spinner-btn" data-act="r+" data-idx="${idx}">+</button>
+            <button class="cspin-btn" data-act="r-" data-idx="${idx}" data-mode="${mode}">−</button>
+            <span class="spinner-value cspin-val" data-type="r" data-idx="${idx}" data-mode="${mode}">${m.reps}</span>
+            <button class="cspin-btn" data-act="r+" data-idx="${idx}" data-mode="${mode}">+</button>
           </div>
         </div>
         <div class="input-cell">
           <span class="input-cell-label">セット</span>
           <div class="spinner">
-            <button class="extra-spinner-btn" data-act="s-" data-idx="${idx}">−</button>
-            <span class="spinner-value extra-spinner-value" data-type="s" data-idx="${idx}">${em.sets}</span>
-            <button class="extra-spinner-btn" data-act="s+" data-idx="${idx}">+</button>
+            <button class="cspin-btn" data-act="s-" data-idx="${idx}" data-mode="${mode}">−</button>
+            <span class="spinner-value cspin-val" data-type="s" data-idx="${idx}" data-mode="${mode}">${m.sets}</span>
+            <button class="cspin-btn" data-act="s+" data-idx="${idx}" data-mode="${mode}">+</button>
           </div>
         </div>
       </div>
       <label class="not-done-toggle" style="display:flex">
-        <input type="checkbox" class="extra-notdone" data-idx="${idx}" ${em.notDone ? "checked" : ""}>
+        <input type="checkbox" class="cnotdone" data-idx="${idx}" data-mode="${mode}" ${m.notDone ? "checked" : ""}>
         <span>実施しなかった</span>
       </label>
     `;
     container.appendChild(card);
   });
 
-  // 追加ボタンエリア
-  const extraAddArea = document.createElement("div");
-  extraAddArea.style.cssText = "display:flex;gap:8px;margin-top:6px;";
-  extraAddArea.innerHTML = `
-    <input type="text" id="extraMenuInput" class="other-input" style="flex:1;margin-top:0"
-      placeholder="種目を追加（例：ダンベルカール）">
-    <button id="addExtraMenuBtn" style="background:#007aff;color:#fff;border:none;border-radius:10px;padding:0 14px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">追加</button>
+  const uid = mode + list.length;
+  const addArea = document.createElement("div");
+  addArea.style.cssText = "display:flex;gap:8px;margin-top:6px;";
+  addArea.innerHTML = `
+    <input type="text" id="addInput_${uid}" class="other-input" style="flex:1;margin-top:0" placeholder="種目を追加（例：ダンベルカール）">
+    <button id="addBtn_${uid}" style="background:#007aff;color:#fff;border:none;border-radius:10px;padding:0 14px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">追加</button>
   `;
-  container.appendChild(extraAddArea);
+  container.appendChild(addArea);
 
-  // イベント割当
-  container.querySelectorAll(".menu-toggle").forEach(btn => {
-    btn.onclick = () => toggleMenu(btn.dataset.name);
+  container.querySelectorAll(`.del-btn[data-mode="${mode}"]`).forEach(btn => {
+    btn.onclick = () => { getList(mode).splice(Number(btn.dataset.idx), 1); renderMenus(); };
   });
-  container.querySelectorAll(".spinner-btn:not(.extra-spinner-btn)").forEach(btn => {
-    btn.onclick = () => adjustValue(btn.dataset.name, btn.dataset.act);
+  container.querySelectorAll(`.cspin-btn[data-mode="${mode}"]`).forEach(btn => {
+    btn.onclick = () => adjustCustomValue(mode, Number(btn.dataset.idx), btn.dataset.act);
   });
-  container.querySelectorAll(".spinner-value:not(.extra-spinner-value)").forEach(span => {
-    span.onclick = () => startDirectInput(span);
+  container.querySelectorAll(`.cspin-val[data-mode="${mode}"]`).forEach(span => {
+    span.onclick = () => startDirectInput(span, mode);
   });
-  container.querySelectorAll(".not-done-toggle input[data-name]").forEach(cb => {
-    cb.onchange = () => toggleNotDone(cb.dataset.name, cb.checked);
-  });
-
-  // extraメニューイベント
-  container.querySelectorAll(".extra-del-btn").forEach(btn => {
-    btn.onclick = () => { extraList.splice(Number(btn.dataset.idx), 1); renderMenus(); };
-  });
-  container.querySelectorAll(".extra-spinner-btn").forEach(btn => {
-    btn.onclick = () => adjustExtraValue(state.category, Number(btn.dataset.idx), btn.dataset.act);
-  });
-  container.querySelectorAll(".extra-spinner-value").forEach(span => {
-    span.onclick = () => startDirectInputExtra(span);
-  });
-  container.querySelectorAll(".extra-notdone").forEach(cb => {
-    cb.onchange = () => { extraList[Number(cb.dataset.idx)].notDone = cb.checked; renderMenus(); };
+  container.querySelectorAll(`.cnotdone[data-mode="${mode}"]`).forEach(cb => {
+    cb.onchange = () => { getList(mode)[Number(cb.dataset.idx)].notDone = cb.checked; renderMenus(); };
   });
 
-  const extraAddBtn = document.getElementById("addExtraMenuBtn");
-  const extraAddInput = document.getElementById("extraMenuInput");
-  const doExtraAdd = () => {
-    const name = extraAddInput.value.trim();
+  const addBtn = document.getElementById(`addBtn_${uid}`);
+  const addInput = document.getElementById(`addInput_${uid}`);
+  const doAdd = () => {
+    const name = addInput.value.trim();
     if (!name) return;
-    extraList.push({ name, weight: 0, reps: 10, sets: 3, notDone: false });
+    getList(mode).push({ name, weight: 0, reps: 10, sets: 3, notDone: false });
     renderMenus();
   };
-  extraAddBtn.onclick = doExtraAdd;
-  extraAddInput.addEventListener("keydown", e => { if (e.key === "Enter") doExtraAdd(); });
+  addBtn.onclick = doAdd;
+  addInput.addEventListener("keydown", e => { if (e.key === "Enter") doAdd(); });
 }
 
 function toggleMenu(name) {
@@ -713,145 +437,21 @@ function toggleNotDone(name, checked) {
   renderMenus();
 }
 
-function startDirectInput(span) {
-  const name = span.dataset.name;
-  const type = span.dataset.type;
-  const m = state.menus[name];
-  const currentVal = type === "w" ? m.weight : type === "r" ? m.reps : m.sets;
-
-  const input = document.createElement("input");
-  input.type = "number";
-  input.className = "spinner-input";
-  input.value = currentVal;
-  input.min = 0;
-  span.replaceWith(input);
-  input.focus();
-  input.select();
-
-  const commit = () => {
-    let val = parseFloat(input.value);
-    if (isNaN(val) || val < 0) val = 0;
-    if (type === "w") m.weight = Math.round(val * 10) / 10;
-    else if (type === "r") m.reps = Math.round(val);
-    else m.sets = Math.max(1, Math.round(val));
-    m.active = true;
-    m.notDone = false;
-    renderMenus();
-  };
-
-  input.addEventListener("blur", commit);
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter") { input.blur(); }
-    if (e.key === "Escape") { renderMenus(); }
-  });
-}
-
 function adjustValue(name, act) {
   const m = state.menus[name];
-  const reps_unit_secs = (CATEGORIES[state.category].find(x => x.name === name) || {}).unit === "秒";
+  const isSecs = (CATEGORIES[state.category].find(x => x.name === name) || {}).unit === "秒";
   if (act === "w+") m.weight = Math.round((m.weight + 2.5) * 10) / 10;
   if (act === "w-") m.weight = Math.max(0, Math.round((m.weight - 2.5) * 10) / 10);
-  if (act === "r+") m.reps += reps_unit_secs ? 10 : 1;
-  if (act === "r-") m.reps = Math.max(0, m.reps - (reps_unit_secs ? 10 : 1));
+  if (act === "r+") m.reps += isSecs ? 10 : 1;
+  if (act === "r-") m.reps = Math.max(0, m.reps - (isSecs ? 10 : 1));
   if (act === "s+") m.sets += 1;
   if (act === "s-") m.sets = Math.max(1, m.sets - 1);
-  // メニューを記録対象に自動切替
-  m.active = true;
-  m.notDone = false;
+  m.active = true; m.notDone = false;
   renderMenus();
 }
 
-//============================================
-// その他カテゴリ：カスタムメニュー追加
-//============================================
-function renderOtherMenus(container) {
-  // 既存カスタムメニューのカード描画
-  const customMenus = state.customMenus || [];
-  customMenus.forEach((menu, idx) => {
-    const m = menu;
-    const card = document.createElement("div");
-    let cardClass = "menu-card" + (m.notDone ? " not-done" : "");
-    card.className = cardClass;
-    card.innerHTML = `
-      <div class="menu-card-header">
-        <span class="menu-name">${m.name}</span>
-        <button class="custom-del-btn" data-idx="${idx}" style="font-size:12px;color:#ff3b30;background:none;border:none;cursor:pointer;padding:4px 8px;">削除</button>
-      </div>
-      <div class="input-row">
-        <div class="input-cell">
-          <span class="input-cell-label">重量(kg)</span>
-          <div class="spinner">
-            <button class="spinner-btn" data-act="w-" data-idx="${idx}">−</button>
-            <span class="spinner-value" data-type="w" data-idx="${idx}">${m.weight}</span>
-            <button class="spinner-btn" data-act="w+" data-idx="${idx}">+</button>
-          </div>
-        </div>
-        <div class="input-cell">
-          <span class="input-cell-label">回数</span>
-          <div class="spinner">
-            <button class="spinner-btn" data-act="r-" data-idx="${idx}">−</button>
-            <span class="spinner-value" data-type="r" data-idx="${idx}">${m.reps}</span>
-            <button class="spinner-btn" data-act="r+" data-idx="${idx}">+</button>
-          </div>
-        </div>
-        <div class="input-cell">
-          <span class="input-cell-label">セット</span>
-          <div class="spinner">
-            <button class="spinner-btn" data-act="s-" data-idx="${idx}">−</button>
-            <span class="spinner-value" data-type="s" data-idx="${idx}">${m.sets}</span>
-            <button class="spinner-btn" data-act="s+" data-idx="${idx}">+</button>
-          </div>
-        </div>
-      </div>
-      <label class="not-done-toggle" style="display:flex">
-        <input type="checkbox" data-idx="${idx}" ${m.notDone ? "checked" : ""}>
-        <span>実施しなかった</span>
-      </label>
-    `;
-    container.appendChild(card);
-  });
-
-  // メニュー追加エリア
-  const addArea = document.createElement("div");
-  addArea.style.cssText = "display:flex;gap:8px;margin-top:6px;";
-  addArea.innerHTML = `
-    <input type="text" id="customMenuInput" class="other-input" style="flex:1;margin-top:0"
-      placeholder="種目名を入力（例：ダンベルカール）">
-    <button id="addCustomMenuBtn" style="background:#007aff;color:#fff;border:none;border-radius:10px;padding:0 14px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">追加</button>
-  `;
-  container.appendChild(addArea);
-
-  // イベント
-  container.querySelectorAll(".custom-del-btn").forEach(btn => {
-    btn.onclick = () => {
-      state.customMenus.splice(Number(btn.dataset.idx), 1);
-      renderMenus();
-    };
-  });
-  container.querySelectorAll(".spinner-btn[data-idx]").forEach(btn => {
-    btn.onclick = () => adjustCustomValue(Number(btn.dataset.idx), btn.dataset.act);
-  });
-  container.querySelectorAll(".not-done-toggle input[data-idx]").forEach(cb => {
-    cb.onchange = () => {
-      state.customMenus[Number(cb.dataset.idx)].notDone = cb.checked;
-      renderMenus();
-    };
-  });
-  const addBtn = document.getElementById("addCustomMenuBtn");
-  const addInput = document.getElementById("customMenuInput");
-  const doAdd = () => {
-    const name = addInput.value.trim();
-    if (!name) return;
-    if (!state.customMenus) state.customMenus = [];
-    state.customMenus.push({ name, weight: 0, reps: 10, sets: 3, notDone: false });
-    renderMenus();
-  };
-  addBtn.onclick = doAdd;
-  addInput.addEventListener("keydown", e => { if (e.key === "Enter") doAdd(); });
-}
-
-function adjustExtraValue(cat, idx, act) {
-  const m = state.extraMenus[cat][idx];
+function adjustCustomValue(mode, idx, act) {
+  const m = getList(mode)[idx];
   if (act === "w+") m.weight = Math.round((m.weight + 2.5) * 10) / 10;
   if (act === "w-") m.weight = Math.max(0, Math.round((m.weight - 2.5) * 10) / 10);
   if (act === "r+") m.reps += 1;
@@ -861,63 +461,47 @@ function adjustExtraValue(cat, idx, act) {
   renderMenus();
 }
 
-function startDirectInputExtra(span) {
-  const idx = Number(span.dataset.idx);
+function startDirectInput(span, mode) {
   const type = span.dataset.type;
-  const isCustom = span.classList.contains("custom-spinner-value");
-  const m = isCustom ? state.customMenus[idx] : state.extraMenus[state.category][idx];
+  let m;
+  if (mode === "normal") {
+    m = state.menus[span.dataset.name];
+  } else {
+    m = getList(mode)[Number(span.dataset.idx)];
+  }
+  if (!m) return;
   const currentVal = type === "w" ? m.weight : type === "r" ? m.reps : m.sets;
-
   const input = document.createElement("input");
-  input.type = "number";
-  input.className = "spinner-input";
-  input.value = currentVal;
-  input.min = 0;
+  input.type = "number"; input.className = "spinner-input";
+  input.value = currentVal; input.min = 0;
   span.replaceWith(input);
-  input.focus();
-  input.select();
-
+  input.focus(); input.select();
   const commit = () => {
     let val = parseFloat(input.value);
     if (isNaN(val) || val < 0) val = 0;
     if (type === "w") m.weight = Math.round(val * 10) / 10;
     else if (type === "r") m.reps = Math.round(val);
     else m.sets = Math.max(1, Math.round(val));
+    if (mode === "normal") { m.active = true; m.notDone = false; }
     renderMenus();
   };
   input.addEventListener("blur", commit);
   input.addEventListener("keydown", e => { if (e.key === "Enter") input.blur(); if (e.key === "Escape") renderMenus(); });
 }
-  const m = state.customMenus[idx];
-  if (act === "w+") m.weight = Math.round((m.weight + 2.5) * 10) / 10;
-  if (act === "w-") m.weight = Math.max(0, Math.round((m.weight - 2.5) * 10) / 10);
-  if (act === "r+") m.reps += 1;
-  if (act === "r-") m.reps = Math.max(0, m.reps - 1);
-  if (act === "s+") m.sets += 1;
-  if (act === "s-") m.sets = Math.max(1, m.sets - 1);
-  renderMenus();
-}
 
-//============================================
-// 送信
-//============================================
 function showToast(msg, type) {
   const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.className = "toast show " + (type || "");
+  t.textContent = msg; t.className = "toast show " + (type || "");
   setTimeout(() => t.classList.remove("show"), 2200);
 }
 
 function buildMenuText() {
-  if (!state.category) return "";
-  if (state.category === "なし") return "";
+  if (!state.category || state.category === "なし") return "";
   if (state.category === "その他") {
-    const lines = (state.customMenus || []).map(m => {
+    return state.customMenus.map(m => {
       if (m.notDone) return `${m.name}：実施しなかった`;
-      if (m.weight > 0) return `${m.name} ${m.weight}kg × ${m.reps}回 × ${m.sets}セット`;
-      return `${m.name} ${m.reps}回 × ${m.sets}セット`;
-    });
-    return lines.join("\n");
+      return m.weight > 0 ? `${m.name} ${m.weight}kg × ${m.reps}回 × ${m.sets}セット` : `${m.name} ${m.reps}回 × ${m.sets}セット`;
+    }).join("\n");
   }
   const lines = [];
   Object.keys(state.menus).forEach(name => {
@@ -926,29 +510,23 @@ function buildMenuText() {
     if (m.notDone) { lines.push(`${name}：実施しなかった`); return; }
     const menuDef = CATEGORIES[state.category].find(x => x.name === name);
     const unit = menuDef && menuDef.unit ? menuDef.unit : "回";
-    if (m.weight > 0) lines.push(`${name} ${m.weight}kg × ${m.reps}${unit} × ${m.sets}セット`);
-    else lines.push(`${name} ${m.reps}${unit} × ${m.sets}セット`);
+    lines.push(m.weight > 0 ? `${name} ${m.weight}kg × ${m.reps}${unit} × ${m.sets}セット` : `${name} ${m.reps}${unit} × ${m.sets}セット`);
   });
-  // extraMenus（追加種目）
   (state.extraMenus[state.category] || []).forEach(em => {
     if (em.notDone) { lines.push(`${em.name}：実施しなかった`); return; }
-    if (em.weight > 0) lines.push(`${em.name} ${em.weight}kg × ${em.reps}回 × ${em.sets}セット`);
-    else lines.push(`${em.name} ${em.reps}回 × ${em.sets}セット`);
+    lines.push(em.weight > 0 ? `${em.name} ${em.weight}kg × ${em.reps}回 × ${em.sets}セット` : `${em.name} ${em.reps}回 × ${em.sets}セット`);
   });
   return lines.join("\n");
 }
 
 async function submit() {
-  // 入力チェック
   if (!state.name) return showToast("名前を選択してください", "error");
   if (!state.category) return showToast("種目を選択してください", "error");
-  if (state.category === "その他" && !state.otherCategory.trim())
-    return showToast("種目名を入力してください", "error");
+  if (state.category === "その他" && !state.otherCategory.trim()) return showToast("種目名を入力してください", "error");
   if (state.rpe === null) return showToast("RPEを選択してください", "error");
 
   const btn = document.getElementById("submitBtn");
-  btn.disabled = true;
-  btn.textContent = "送信中...";
+  btn.disabled = true; btn.textContent = "送信中...";
 
   const payload = {
     timestamp: new Date().toISOString(),
@@ -960,57 +538,31 @@ async function submit() {
   };
 
   try {
-    if (GAS_URL.startsWith("ここに")) {
-      // GAS未設定時はテストモード（送信せず内容を表示）
-      console.log("送信内容（テスト）:", payload);
-      showToast("テストモード：コンソールに出力", "success");
-    } else {
-      await new Promise((resolve, reject) => {
-        const controller = new AbortController();
-        const timer = setTimeout(() => {
-          resolve(); // タイムアウトしても成功扱いにする（GASはno-corsで応答が読めないため）
-        }, 5000);
-        fetch(GAS_URL, {
-          method: "POST",
-          body: JSON.stringify(payload),
-          headers: { "Content-Type": "text/plain" },
-          mode: "no-cors",
-          signal: controller.signal
-        }).then(() => {
-          clearTimeout(timer);
-          resolve();
-        }).catch(err => {
-          clearTimeout(timer);
-          reject(err);
-        });
-      });
-      showToast("送信しました ✓", "success");
-    }
+    await new Promise((resolve, reject) => {
+      const timer = setTimeout(resolve, 5000);
+      fetch(GAS_URL, {
+        method: "POST", body: JSON.stringify(payload),
+        headers: { "Content-Type": "text/plain" }, mode: "no-cors"
+      }).then(() => { clearTimeout(timer); resolve(); })
+        .catch(err => { clearTimeout(timer); reject(err); });
+    });
+    showToast("送信しました ✓", "success");
     setTimeout(resetForm, 1500);
   } catch (e) {
     showToast("送信エラー: " + e.message, "error");
   } finally {
-    btn.disabled = false;
-    btn.textContent = "送信する";
+    btn.disabled = false; btn.textContent = "送信する";
   }
 }
 
 function resetForm() {
-  state.name = null;
-  state.category = null;
-  state.otherCategory = "";
-  state.menus = {};
-  state.customMenus = [];
-  state.extraMenus = {};
-  state.lastRecord = null;
-  state.rpe = null;
-  state.memo = "";
+  state.name = null; state.category = null; state.otherCategory = "";
+  state.menus = {}; state.customMenus = []; state.extraMenus = {};
+  state.lastRecord = null; state.rpe = null; state.memo = "";
   document.getElementById("memo").value = "";
   document.getElementById("otherCategoryInput").value = "";
   document.getElementById("otherCategoryWrap").style.display = "none";
-  document.querySelectorAll(".btn.selected, .rpe-btn.selected").forEach(b =>
-    b.classList.remove("selected")
-  );
+  document.querySelectorAll(".btn.selected, .rpe-btn.selected").forEach(b => b.classList.remove("selected"));
   renderLastRecord();
   renderMenus();
   window.scrollTo(0, 0);
