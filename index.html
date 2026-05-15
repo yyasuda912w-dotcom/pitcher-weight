@@ -61,6 +61,17 @@ textarea:focus { outline: 2px solid #007aff; }
 .toast.success { background: rgba(52,199,89,0.95); }
 .toast.error { background: rgba(255,59,48,0.95); }
 .no-menu-msg { text-align: center; color: #86868b; padding: 20px; font-size: 13px; }
+.set-row { display: grid; grid-template-columns: 28px 1fr 1fr auto; gap: 6px; align-items: center; margin-top: 6px; }
+.set-label { font-size: 12px; color: #86868b; font-weight: 600; text-align: center; }
+.set-input-wrap { display: flex; flex-direction: column; align-items: center; }
+.set-input-label { font-size: 10px; color: #86868b; margin-bottom: 2px; }
+.set-spinner { display: flex; align-items: center; background: #f5f5f7; border-radius: 8px; width: 100%; height: 34px; overflow: hidden; }
+.set-spinner-btn { width: 26px; height: 34px; background: none; border: none; font-size: 16px; font-weight: 600; color: #007aff; cursor: pointer; flex-shrink: 0; }
+.set-spinner-btn:active { background: #e5e5ea; }
+.set-spinner-val { flex: 1; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; }
+.set-del-btn { width: 28px; height: 28px; background: none; border: none; color: #ff3b30; font-size: 18px; cursor: pointer; line-height: 1; padding: 0; }
+.add-set-btn { margin-top: 8px; width: 100%; background: #f0f7ff; border: 1px dashed #007aff; border-radius: 8px; padding: 7px; font-size: 13px; color: #007aff; font-weight: 600; cursor: pointer; }
+.add-set-btn:active { background: #e0f0ff; }
 </style>
 </head>
 <body>
@@ -116,8 +127,8 @@ const PITCHERS = [
 
 const CATEGORIES = {
   "SQ": [
-    { name: "パーフェクトプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
-    { name: "クロスプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
+    { name: "パーフェクトプランク", default: { weight: 0, reps: 20, sets: 3 }, unit: "秒" },
+    { name: "クロスプランク", default: { weight: 0, reps: 20, sets: 3 }, unit: "秒" },
     { name: "ルーマニアンデッドリフト", default: { weight: 60, reps: 8, sets: 3 } },
     { name: "ベントオーバーローイング", default: { weight: 50, reps: 10, sets: 3 } },
     { name: "ゴブレットスクワット", default: { weight: 30, reps: 10, sets: 3 } },
@@ -126,8 +137,8 @@ const CATEGORIES = {
     { name: "スクワットジャンプ", default: { weight: 0, reps: 5, sets: 3 } }
   ],
   "DL": [
-    { name: "パーフェクトプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
-    { name: "クロスプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
+    { name: "パーフェクトプランク", default: { weight: 0, reps: 20, sets: 3 }, unit: "秒" },
+    { name: "クロスプランク", default: { weight: 0, reps: 20, sets: 3 }, unit: "秒" },
     { name: "ルーマニアンデッドリフト", default: { weight: 60, reps: 8, sets: 3 } },
     { name: "ベントオーバーローイング", default: { weight: 50, reps: 10, sets: 3 } },
     { name: "ブルガリアンスクワット", default: { weight: 20, reps: 10, sets: 3 } },
@@ -136,16 +147,16 @@ const CATEGORIES = {
     { name: "デッドリフトジャンプ", default: { weight: 40, reps: 5, sets: 3 } }
   ],
   "CL": [
-    { name: "パーフェクトプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
-    { name: "クロスプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
+    { name: "パーフェクトプランク", default: { weight: 0, reps: 20, sets: 3 }, unit: "秒" },
+    { name: "クロスプランク", default: { weight: 0, reps: 20, sets: 3 }, unit: "秒" },
     { name: "パワークリーン or ハイプル", default: { weight: 50, reps: 5, sets: 3 } },
     { name: "CMJ", default: { weight: 0, reps: 5, sets: 3 } },
     { name: "ワンハンドダンベルプレス", default: { weight: 15, reps: 8, sets: 3 } },
     { name: "ランドマイン（回旋 or プッシュ）", default: { weight: 20, reps: 10, sets: 3 } }
   ],
   "Heavy": [
-    { name: "パーフェクトプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
-    { name: "クロスプランク", default: { weight: 0, reps: 60, sets: 3 }, unit: "秒" },
+    { name: "パーフェクトプランク", default: { weight: 0, reps: 20, sets: 3 }, unit: "秒" },
+    { name: "クロスプランク", default: { weight: 0, reps: 20, sets: 3 }, unit: "秒" },
     { name: "ルーマニアンデッドリフト", default: { weight: 60, reps: 8, sets: 3 } },
     { name: "ベントオーバーローイング", default: { weight: 50, reps: 10, sets: 3 } },
     { name: "アイソメトリックスクワット", default: { weight: 0, reps: 30, sets: 3 }, unit: "秒" },
@@ -159,7 +170,9 @@ const CATEGORIES = {
 
 const state = {
   name: null, category: null, otherCategory: "",
-  menus: {}, customMenus: [], extraMenus: {},
+  menus: {},       // { name: { active, notDone, sets: [{weight, reps}] } }
+  customMenus: [], // [{name, notDone, sets:[{weight,reps}]}]
+  extraMenus: {},  // {cat: [{name, notDone, sets:[{weight,reps}]}]}
   rpe: null, memo: "", lastRecord: null
 };
 
@@ -285,64 +298,33 @@ function renderMenus() {
 
   CATEGORIES[state.category].forEach(menu => {
     if (!state.menus[menu.name]) {
-      state.menus[menu.name] = { active: false, notDone: false, weight: menu.default.weight, reps: menu.default.reps, sets: menu.default.sets };
+      state.menus[menu.name] = { active: false, notDone: false, sets: [{ weight: menu.default.weight, reps: menu.default.reps }] };
     }
     const m = state.menus[menu.name];
     const unit = menu.unit || "回";
     const card = document.createElement("div");
     card.className = "menu-card" + (!m.active ? " disabled" : "") + (m.active && m.notDone ? " not-done" : "");
-    card.innerHTML = `
-      <div class="menu-card-header">
-        <span class="menu-name">${menu.name}</span>
-        <button class="menu-toggle ${m.active ? "active" : ""}" data-name="${menu.name}">
-          ${m.active ? "✓ 記録中" : "+ 記録する"}
-        </button>
-      </div>
-      <div class="input-row">
-        <div class="input-cell">
-          <span class="input-cell-label">重量(kg)</span>
-          <div class="spinner">
-            <button class="spinner-btn" data-act="w-" data-name="${menu.name}">−</button>
-            <span class="spinner-value" data-type="w" data-name="${menu.name}">${m.weight}</span>
-            <button class="spinner-btn" data-act="w+" data-name="${menu.name}">+</button>
-          </div>
-        </div>
-        <div class="input-cell">
-          <span class="input-cell-label">${unit}数</span>
-          <div class="spinner">
-            <button class="spinner-btn" data-act="r-" data-name="${menu.name}">−</button>
-            <span class="spinner-value" data-type="r" data-name="${menu.name}">${m.reps}</span>
-            <button class="spinner-btn" data-act="r+" data-name="${menu.name}">+</button>
-          </div>
-        </div>
-        <div class="input-cell">
-          <span class="input-cell-label">セット</span>
-          <div class="spinner">
-            <button class="spinner-btn" data-act="s-" data-name="${menu.name}">−</button>
-            <span class="spinner-value" data-type="s" data-name="${menu.name}">${m.sets}</span>
-            <button class="spinner-btn" data-act="s+" data-name="${menu.name}">+</button>
-          </div>
-        </div>
-      </div>
-      <label class="not-done-toggle" style="display:${m.active ? 'flex' : 'none'}">
-        <input type="checkbox" data-name="${menu.name}" ${m.notDone ? "checked" : ""}>
-        <span>実施しなかった</span>
-      </label>
-    `;
+    card.appendChild(makeMenuHeader(menu.name, m.active));
+    if (m.active) {
+      m.sets.forEach((s, si) => {
+        card.appendChild(makeSetRow(menu.name, si, s, unit, m.sets.length > 1));
+      });
+      const addSetBtn = document.createElement("button");
+      addSetBtn.className = "add-set-btn";
+      addSetBtn.textContent = `＋ セットを追加`;
+      addSetBtn.onclick = () => { m.sets.push({ weight: m.sets[m.sets.length-1].weight, reps: m.sets[m.sets.length-1].reps }); renderMenus(); };
+      card.appendChild(addSetBtn);
+      const notDoneLabel = document.createElement("label");
+      notDoneLabel.className = "not-done-toggle";
+      notDoneLabel.innerHTML = `<input type="checkbox" data-name="${menu.name}" ${m.notDone ? "checked" : ""}><span>実施しなかった</span>`;
+      notDoneLabel.querySelector("input").onchange = (e) => toggleNotDone(menu.name, e.target.checked);
+      card.appendChild(notDoneLabel);
+    }
     container.appendChild(card);
   });
 
   container.querySelectorAll(".menu-toggle").forEach(btn => {
     btn.onclick = () => toggleMenu(btn.dataset.name);
-  });
-  container.querySelectorAll(".spinner-btn[data-name]").forEach(btn => {
-    btn.onclick = () => adjustValue(btn.dataset.name, btn.dataset.act);
-  });
-  container.querySelectorAll(".spinner-value[data-name]").forEach(span => {
-    span.onclick = () => startDirectInput(span, "normal");
-  });
-  container.querySelectorAll(".not-done-toggle input[data-name]").forEach(cb => {
-    cb.onchange = () => toggleNotDone(cb.dataset.name, cb.checked);
   });
 
   if (!state.extraMenus[state.category]) state.extraMenus[state.category] = [];
@@ -351,44 +333,33 @@ function renderMenus() {
 
 function renderCustomMenuSection(container, list, mode) {
   list.forEach((m, idx) => {
+    if (!m.sets) m.sets = [{ weight: m.weight || 0, reps: m.reps || 10 }];
     const card = document.createElement("div");
     card.className = "menu-card" + (m.notDone ? " not-done" : "");
-    card.innerHTML = `
-      <div class="menu-card-header">
-        <span class="menu-name">${m.name}</span>
-        <button class="del-btn" data-idx="${idx}" data-mode="${mode}" style="font-size:12px;color:#ff3b30;background:none;border:none;cursor:pointer;padding:4px 8px;">削除</button>
-      </div>
-      <div class="input-row">
-        <div class="input-cell">
-          <span class="input-cell-label">重量(kg)</span>
-          <div class="spinner">
-            <button class="cspin-btn" data-act="w-" data-idx="${idx}" data-mode="${mode}">−</button>
-            <span class="spinner-value cspin-val" data-type="w" data-idx="${idx}" data-mode="${mode}">${m.weight}</span>
-            <button class="cspin-btn" data-act="w+" data-idx="${idx}" data-mode="${mode}">+</button>
-          </div>
-        </div>
-        <div class="input-cell">
-          <span class="input-cell-label">回数</span>
-          <div class="spinner">
-            <button class="cspin-btn" data-act="r-" data-idx="${idx}" data-mode="${mode}">−</button>
-            <span class="spinner-value cspin-val" data-type="r" data-idx="${idx}" data-mode="${mode}">${m.reps}</span>
-            <button class="cspin-btn" data-act="r+" data-idx="${idx}" data-mode="${mode}">+</button>
-          </div>
-        </div>
-        <div class="input-cell">
-          <span class="input-cell-label">セット</span>
-          <div class="spinner">
-            <button class="cspin-btn" data-act="s-" data-idx="${idx}" data-mode="${mode}">−</button>
-            <span class="spinner-value cspin-val" data-type="s" data-idx="${idx}" data-mode="${mode}">${m.sets}</span>
-            <button class="cspin-btn" data-act="s+" data-idx="${idx}" data-mode="${mode}">+</button>
-          </div>
-        </div>
-      </div>
-      <label class="not-done-toggle" style="display:flex">
-        <input type="checkbox" class="cnotdone" data-idx="${idx}" data-mode="${mode}" ${m.notDone ? "checked" : ""}>
-        <span>実施しなかった</span>
-      </label>
-    `;
+    // ヘッダー
+    const header = document.createElement("div");
+    header.className = "menu-card-header";
+    header.innerHTML = `<span class="menu-name">${m.name}</span>
+      <button class="del-btn" data-idx="${idx}" data-mode="${mode}" style="font-size:12px;color:#ff3b30;background:none;border:none;cursor:pointer;padding:4px 8px;">削除</button>`;
+    header.querySelector(".del-btn").onclick = () => { getList(mode).splice(idx, 1); renderMenus(); };
+    card.appendChild(header);
+    // セット行
+    m.sets.forEach((s, si) => {
+      const row = makeCustomSetRow(mode, idx, si, s, m.sets.length > 1);
+      card.appendChild(row);
+    });
+    // セット追加ボタン
+    const addSetBtn = document.createElement("button");
+    addSetBtn.className = "add-set-btn";
+    addSetBtn.textContent = "＋ セットを追加";
+    addSetBtn.onclick = () => { m.sets.push({ weight: m.sets[m.sets.length-1].weight, reps: m.sets[m.sets.length-1].reps }); renderMenus(); };
+    card.appendChild(addSetBtn);
+    // 未実施チェック
+    const notDoneLabel = document.createElement("label");
+    notDoneLabel.className = "not-done-toggle";
+    notDoneLabel.innerHTML = `<input type="checkbox" class="cnotdone" data-idx="${idx}" data-mode="${mode}" ${m.notDone ? "checked" : ""}><span>実施しなかった</span>`;
+    notDoneLabel.querySelector("input").onchange = (e) => { getList(mode)[idx].notDone = e.target.checked; renderMenus(); };
+    card.appendChild(notDoneLabel);
     container.appendChild(card);
   });
 
@@ -400,77 +371,117 @@ function renderCustomMenuSection(container, list, mode) {
     <button id="addBtn_${uid}" style="background:#007aff;color:#fff;border:none;border-radius:10px;padding:0 14px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">追加</button>
   `;
   container.appendChild(addArea);
-
-  container.querySelectorAll(`.del-btn[data-mode="${mode}"]`).forEach(btn => {
-    btn.onclick = () => { getList(mode).splice(Number(btn.dataset.idx), 1); renderMenus(); };
-  });
-  container.querySelectorAll(`.cspin-btn[data-mode="${mode}"]`).forEach(btn => {
-    btn.onclick = () => adjustCustomValue(mode, Number(btn.dataset.idx), btn.dataset.act);
-  });
-  container.querySelectorAll(`.cspin-val[data-mode="${mode}"]`).forEach(span => {
-    span.onclick = () => startDirectInput(span, mode);
-  });
-  container.querySelectorAll(`.cnotdone[data-mode="${mode}"]`).forEach(cb => {
-    cb.onchange = () => { getList(mode)[Number(cb.dataset.idx)].notDone = cb.checked; renderMenus(); };
-  });
-
   const addBtn = document.getElementById(`addBtn_${uid}`);
   const addInput = document.getElementById(`addInput_${uid}`);
   const doAdd = () => {
     const name = addInput.value.trim();
     if (!name) return;
-    getList(mode).push({ name, weight: 0, reps: 10, sets: 3, notDone: false });
+    getList(mode).push({ name, notDone: false, sets: [{ weight: 0, reps: 10 }] });
     renderMenus();
   };
   addBtn.onclick = doAdd;
   addInput.addEventListener("keydown", e => { if (e.key === "Enter") doAdd(); });
 }
 
-function toggleMenu(name) {
-  state.menus[name].active = !state.menus[name].active;
-  if (!state.menus[name].active) state.menus[name].notDone = false;
-  renderMenus();
+function makeCustomSetRow(mode, idx, si, s, canDelete) {
+  const row = document.createElement("div");
+  row.className = "set-row";
+  row.innerHTML = `
+    <span class="set-label">${si+1}</span>
+    <div class="set-input-wrap">
+      <span class="set-input-label">重量(kg)</span>
+      <div class="set-spinner">
+        <button class="set-spinner-btn">−</button>
+        <span class="set-spinner-val">${s.weight}</span>
+        <button class="set-spinner-btn">+</button>
+      </div>
+    </div>
+    <div class="set-input-wrap">
+      <span class="set-input-label">回数</span>
+      <div class="set-spinner">
+        <button class="set-spinner-btn">−</button>
+        <span class="set-spinner-val">${s.reps}</span>
+        <button class="set-spinner-btn">+</button>
+      </div>
+    </div>
+    <button class="set-del-btn" style="visibility:${canDelete ? 'visible' : 'hidden'}">×</button>
+  `;
+  const btns = row.querySelectorAll(".set-spinner-btn");
+  const vals = row.querySelectorAll(".set-spinner-val");
+  btns[0].onclick = () => { s.weight = Math.max(0, Math.round((s.weight-2.5)*10)/10); renderMenus(); };
+  btns[1].onclick = () => { s.weight = Math.round((s.weight+2.5)*10)/10; renderMenus(); };
+  vals[0].onclick = () => startSetInput(vals[0], s, "w", null);
+  btns[2].onclick = () => { s.reps = Math.max(0, s.reps-1); renderMenus(); };
+  btns[3].onclick = () => { s.reps += 1; renderMenus(); };
+  vals[1].onclick = () => startSetInput(vals[1], s, "r", null);
+  row.querySelector(".set-del-btn").onclick = () => { getList(mode)[idx].sets.splice(si, 1); renderMenus(); };
+  return row;
 }
 
-function toggleNotDone(name, checked) {
-  state.menus[name].notDone = checked;
-  renderMenus();
+function makeMenuHeader(name, active) {
+  const div = document.createElement("div");
+  div.className = "menu-card-header";
+  div.innerHTML = `
+    <span class="menu-name">${name}</span>
+    <button class="menu-toggle ${active ? "active" : ""}" data-name="${name}">
+      ${active ? "✓ 記録中" : "+ 記録する"}
+    </button>`;
+  div.querySelector(".menu-toggle").onclick = () => toggleMenu(name);
+  return div;
 }
 
-function adjustValue(name, act) {
-  const m = state.menus[name];
-  const isSecs = (CATEGORIES[state.category].find(x => x.name === name) || {}).unit === "秒";
-  if (act === "w+") m.weight = Math.round((m.weight + 2.5) * 10) / 10;
-  if (act === "w-") m.weight = Math.max(0, Math.round((m.weight - 2.5) * 10) / 10);
-  if (act === "r+") m.reps += isSecs ? 10 : 1;
-  if (act === "r-") m.reps = Math.max(0, m.reps - (isSecs ? 10 : 1));
-  if (act === "s+") m.sets += 1;
-  if (act === "s-") m.sets = Math.max(1, m.sets - 1);
-  m.active = true; m.notDone = false;
-  renderMenus();
+function makeSetRow(menuName, si, s, unit, canDelete) {
+  const isSecs = unit === "秒";
+  const row = document.createElement("div");
+  row.className = "set-row";
+  row.innerHTML = `
+    <span class="set-label">${si+1}</span>
+    <div class="set-input-wrap">
+      <span class="set-input-label">重量(kg)</span>
+      <div class="set-spinner">
+        <button class="set-spinner-btn">−</button>
+        <span class="set-spinner-val">${s.weight}</span>
+        <button class="set-spinner-btn">+</button>
+      </div>
+    </div>
+    <div class="set-input-wrap">
+      <span class="set-input-label">${unit}数</span>
+      <div class="set-spinner">
+        <button class="set-spinner-btn">−</button>
+        <span class="set-spinner-val">${s.reps}</span>
+        <button class="set-spinner-btn">+</button>
+      </div>
+    </div>
+    <button class="set-del-btn" style="visibility:${canDelete ? 'visible' : 'hidden'}">×</button>
+  `;
+  const btns = row.querySelectorAll(".set-spinner-btn");
+  const vals = row.querySelectorAll(".set-spinner-val");
+
+  // 重量
+  btns[0].onclick = () => { s.weight = Math.max(0, Math.round((s.weight - 2.5)*10)/10); activateMenu(menuName); renderMenus(); };
+  btns[1].onclick = () => { s.weight = Math.round((s.weight + 2.5)*10)/10; activateMenu(menuName); renderMenus(); };
+  vals[0].onclick = () => startSetInput(vals[0], s, "w", menuName);
+
+  // 回数/秒数
+  btns[2].onclick = () => { s.reps = Math.max(0, s.reps - (isSecs ? 5 : 1)); activateMenu(menuName); renderMenus(); };
+  btns[3].onclick = () => { s.reps += isSecs ? 5 : 1; activateMenu(menuName); renderMenus(); };
+  vals[1].onclick = () => startSetInput(vals[1], s, "r", menuName);
+
+  // 削除
+  row.querySelector(".set-del-btn").onclick = () => {
+    const m = state.menus[menuName];
+    if (m) m.sets.splice(si, 1);
+    renderMenus();
+  };
+  return row;
 }
 
-function adjustCustomValue(mode, idx, act) {
-  const m = getList(mode)[idx];
-  if (act === "w+") m.weight = Math.round((m.weight + 2.5) * 10) / 10;
-  if (act === "w-") m.weight = Math.max(0, Math.round((m.weight - 2.5) * 10) / 10);
-  if (act === "r+") m.reps += 1;
-  if (act === "r-") m.reps = Math.max(0, m.reps - 1);
-  if (act === "s+") m.sets += 1;
-  if (act === "s-") m.sets = Math.max(1, m.sets - 1);
-  renderMenus();
+function activateMenu(name) {
+  if (state.menus[name]) { state.menus[name].active = true; state.menus[name].notDone = false; }
 }
 
-function startDirectInput(span, mode) {
-  const type = span.dataset.type;
-  let m;
-  if (mode === "normal") {
-    m = state.menus[span.dataset.name];
-  } else {
-    m = getList(mode)[Number(span.dataset.idx)];
-  }
-  if (!m) return;
-  const currentVal = type === "w" ? m.weight : type === "r" ? m.reps : m.sets;
+function startSetInput(span, s, type, menuName) {
+  const currentVal = type === "w" ? s.weight : s.reps;
   const input = document.createElement("input");
   input.type = "number"; input.className = "spinner-input";
   input.value = currentVal; input.min = 0;
@@ -479,14 +490,25 @@ function startDirectInput(span, mode) {
   const commit = () => {
     let val = parseFloat(input.value);
     if (isNaN(val) || val < 0) val = 0;
-    if (type === "w") m.weight = Math.round(val * 10) / 10;
-    else if (type === "r") m.reps = Math.round(val);
-    else m.sets = Math.max(1, Math.round(val));
-    if (mode === "normal") { m.active = true; m.notDone = false; }
+    if (type === "w") s.weight = Math.round(val * 10) / 10;
+    else s.reps = Math.round(val);
+    if (menuName) activateMenu(menuName);
     renderMenus();
   };
   input.addEventListener("blur", commit);
   input.addEventListener("keydown", e => { if (e.key === "Enter") input.blur(); if (e.key === "Escape") renderMenus(); });
+}
+
+function toggleMenu(name) {
+  const m = state.menus[name];
+  m.active = !m.active;
+  if (!m.active) m.notDone = false;
+  renderMenus();
+}
+
+function toggleNotDone(name, checked) {
+  state.menus[name].notDone = checked;
+  renderMenus();
 }
 
 function showToast(msg, type) {
@@ -500,7 +522,8 @@ function buildMenuText() {
   if (state.category === "その他") {
     return state.customMenus.map(m => {
       if (m.notDone) return `${m.name}：実施しなかった`;
-      return m.weight > 0 ? `${m.name} ${m.weight}kg × ${m.reps}回 × ${m.sets}セット` : `${m.name} ${m.reps}回 × ${m.sets}セット`;
+      const setLines = (m.sets || []).map((s, i) => s.weight > 0 ? `  ${i+1}セット目: ${s.weight}kg × ${s.reps}回` : `  ${i+1}セット目: ${s.reps}回`);
+      return `${m.name}\n${setLines.join("\n")}`;
     }).join("\n");
   }
   const lines = [];
@@ -510,11 +533,13 @@ function buildMenuText() {
     if (m.notDone) { lines.push(`${name}：実施しなかった`); return; }
     const menuDef = CATEGORIES[state.category].find(x => x.name === name);
     const unit = menuDef && menuDef.unit ? menuDef.unit : "回";
-    lines.push(m.weight > 0 ? `${name} ${m.weight}kg × ${m.reps}${unit} × ${m.sets}セット` : `${name} ${m.reps}${unit} × ${m.sets}セット`);
+    const setLines = (m.sets || []).map((s, i) => s.weight > 0 ? `  ${i+1}セット目: ${s.weight}kg × ${s.reps}${unit}` : `  ${i+1}セット目: ${s.reps}${unit}`);
+    lines.push(`${name}\n${setLines.join("\n")}`);
   });
   (state.extraMenus[state.category] || []).forEach(em => {
     if (em.notDone) { lines.push(`${em.name}：実施しなかった`); return; }
-    lines.push(em.weight > 0 ? `${em.name} ${em.weight}kg × ${em.reps}回 × ${em.sets}セット` : `${em.name} ${em.reps}回 × ${em.sets}セット`);
+    const setLines = (em.sets || []).map((s, i) => s.weight > 0 ? `  ${i+1}セット目: ${s.weight}kg × ${s.reps}回` : `  ${i+1}セット目: ${s.reps}回`);
+    lines.push(`${em.name}\n${setLines.join("\n")}`);
   });
   return lines.join("\n");
 }
